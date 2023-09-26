@@ -1,0 +1,4 @@
+/.idea/
+/cpe-dependencies-domain/target/
+/cpe-dependencies-exception/target/
+/cpe-dependencies-util/target/
