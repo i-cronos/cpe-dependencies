@@ -3,8 +3,9 @@ package pe.ibk.cpe.dependencies.global.exception;
 import lombok.Builder;
 import lombok.Getter;
 
+@Getter
 public class DomainException extends RuntimeException {
-    private Error error;
+    private final Error error;
 
     public DomainException(Error error) {
         super(error.systemMessage);
@@ -21,7 +22,4 @@ public class DomainException extends RuntimeException {
         private String groupCode;
     }
 
-    public Error getError() {
-        return error;
-    }
 }

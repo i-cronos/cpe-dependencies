@@ -1,4 +1,4 @@
-package pe.ibk.cpe.dependencies.application.error;
+package pe.ibk.cpe.dependencies.global.exception.error;
 
 import lombok.Builder;
 import lombok.Getter;

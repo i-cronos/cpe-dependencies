@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public final class JsonLogUtil {
+public final class CoreJsonUtil {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 

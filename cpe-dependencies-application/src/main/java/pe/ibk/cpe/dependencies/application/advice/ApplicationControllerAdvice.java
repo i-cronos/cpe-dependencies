@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
-import pe.ibk.cpe.dependencies.application.error.ApplicationErrorMapper;
-import pe.ibk.cpe.dependencies.application.error.SystemError;
-import pe.ibk.cpe.dependencies.application.error.UserError;
+import pe.ibk.cpe.dependencies.global.exception.error.SystemError;
+import pe.ibk.cpe.dependencies.global.exception.error.UserError;
 import pe.ibk.cpe.dependencies.global.exception.DomainException;
 
 import java.time.LocalDateTime;
@@ -33,7 +32,7 @@ public class ApplicationControllerAdvice {
 
         log.info("Domain error : {}", systemError);
 
-        return ApplicationErrorMapper.map(systemError);
+        return map(systemError);
     }
 
     @ExceptionHandler({Exception.class})
@@ -47,9 +46,17 @@ public class ApplicationControllerAdvice {
                 .systemMessage(exception.getMessage())
                 .build();
 
-        log.info("General Error : {}", systemError);
+        log.info("General Error : class {}, {}", exception.getClass(), systemError);
 
-        return ApplicationErrorMapper.map(systemError);
+        return map(systemError);
+    }
+
+    private UserError map(SystemError systemError) {
+        return UserError.builder()
+                .message(systemError.getUserMessage())
+                .errorCode(systemError.getErrorCode())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
+                .build();
     }
 
 }

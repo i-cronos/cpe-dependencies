@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.io.Serializable;
 
 @Slf4j
-class JsonLogUtilTest {
-    JsonLogUtil jsonLogUtil = new JsonLogUtil();
+class CoreJsonUtilTest {
+    CoreJsonUtil jsonLogUtil = new CoreJsonUtil();
 
     @Test
     void givenObject_whenToJson_thenStringJson() {

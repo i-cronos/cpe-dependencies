@@ -1,4 +1,4 @@
-package pe.ibk.cpe.dependencies.application.error;
+package pe.ibk.cpe.dependencies.global.exception.error;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,4 +8,5 @@ import lombok.Getter;
 public class UserError {
     private String message;
     private String errorCode;
+    private String status;
 }
