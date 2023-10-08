@@ -1,0 +1,5 @@
+/.idea/
+/cpe-dependencies-domain/target/
+/cpe-dependencies-application/target/
+/cpe-dependencies-infrastructure/target/
+/cpe-dependencies-global/target/
