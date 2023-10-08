@@ -1,0 +1,6 @@
+pe/ibk/cpe/dependencies/global/util/JsonLogUtil.class
+pe/ibk/cpe/dependencies/global/util/RegExpressionUtil.class
+pe/ibk/cpe/dependencies/global/exception/DomainException.class
+pe/ibk/cpe/dependencies/global/exception/DomainException$Error$ErrorBuilder.class
+pe/ibk/cpe/dependencies/global/exception/DomainException$Error.class
+pe/ibk/cpe/dependencies/global/config/DependenciesGlobalConfiguration.class

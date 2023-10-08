@@ -1,4 +1,5 @@
 /.idea/
 /cpe-dependencies-domain/target/
-/cpe-dependencies-exception/target/
-/cpe-dependencies-util/target/
+/cpe-dependencies-application/target/
+/cpe-dependencies-infrastructure/target/
+/cpe-dependencies-global/target/
