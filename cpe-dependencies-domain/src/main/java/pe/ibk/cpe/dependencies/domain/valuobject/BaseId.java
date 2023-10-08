@@ -1,4 +1,4 @@
-package pe.ibk.cpe.dependencies.domain;
+package pe.ibk.cpe.dependencies.domain.valuobject;
 
 import java.util.Objects;
 
