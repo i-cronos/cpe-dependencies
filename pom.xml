@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-
     <modelVersion>4.0.0</modelVersion>
     <groupId>pe.ibk.cpe</groupId>
     <artifactId>cpe-dependencies</artifactId>
@@ -13,6 +12,7 @@
     <packaging>pom</packaging>
 
     <properties>
+        <java.version>17</java.version>
         <spring.boot.version>3.1.4</spring.boot.version>
         <lombok.version>1.18.24</lombok.version>
         <junit.version>5.9.2</junit.version>
@@ -148,9 +148,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                    <compilerVersion>17</compilerVersion>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerVersion>${java.version}</compilerVersion>
                 </configuration>
             </plugin>
         </plugins>
