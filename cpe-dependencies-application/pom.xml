@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>pe.ibk.cpe</groupId>
-            <artifactId>cpe-dependencies-global</artifactId>
+            <artifactId>cpe-dependencies-common</artifactId>
         </dependency>
     </dependencies>
 

@@ -1,4 +1,4 @@
-package pe.ibk.cpe.dependencies.global.util;
+package pe.ibk.cpe.dependencies.common.util;
 
 import java.util.regex.Pattern;
 

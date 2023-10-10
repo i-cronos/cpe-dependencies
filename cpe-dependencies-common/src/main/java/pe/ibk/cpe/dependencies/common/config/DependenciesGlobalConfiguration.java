@@ -1,9 +1,9 @@
-package pe.ibk.cpe.dependencies.global.config;
+package pe.ibk.cpe.dependencies.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pe.ibk.cpe.dependencies.global.jwt.JwtProvider;
-import pe.ibk.cpe.dependencies.global.util.CoreJsonUtil;
+import pe.ibk.cpe.dependencies.common.jwt.JwtProvider;
+import pe.ibk.cpe.dependencies.common.util.CoreJsonUtil;
 
 @Configuration
 public class DependenciesGlobalConfiguration {

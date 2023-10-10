@@ -7,8 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pe.ibk.cpe.dependencies.global.exception.error.UserError;
-import pe.ibk.cpe.dependencies.global.util.CoreJsonUtil;
+import pe.ibk.cpe.dependencies.common.exception.error.UserError;
+import pe.ibk.cpe.dependencies.common.util.CoreJsonUtil;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -20,6 +20,7 @@ public class CoreWardenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("Core warden filter...");
         String deviceHeader = request.getHeader(DEVICE_HEADER);
 
         if (Objects.nonNull(deviceHeader)) {

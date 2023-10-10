@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
-import pe.ibk.cpe.dependencies.global.exception.error.SystemError;
-import pe.ibk.cpe.dependencies.global.exception.error.UserError;
-import pe.ibk.cpe.dependencies.global.exception.DomainException;
+import pe.ibk.cpe.dependencies.common.exception.error.SystemError;
+import pe.ibk.cpe.dependencies.common.exception.error.UserError;
+import pe.ibk.cpe.dependencies.common.exception.DomainException;
 
 import java.time.LocalDateTime;
 

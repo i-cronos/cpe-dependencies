@@ -20,7 +20,7 @@
 
 
     <modules>
-        <module>cpe-dependencies-global</module>
+        <module>cpe-dependencies-common</module>
         <module>cpe-dependencies-domain</module>
         <module>cpe-dependencies-application</module>
         <module>cpe-dependencies-infrastructure</module>
@@ -31,7 +31,7 @@
             <!-- local -->
             <dependency>
                 <groupId>pe.ibk.cpe</groupId>
-                <artifactId>cpe-dependencies-global</artifactId>
+                <artifactId>cpe-dependencies-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -1,4 +1,4 @@
-package pe.ibk.cpe.dependencies.global.jwt;
+package pe.ibk.cpe.dependencies.common.jwt;
 
 import java.util.UUID;
 
