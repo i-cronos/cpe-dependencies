@@ -6,6 +6,7 @@ public class Util {
 
     public enum Type {
         JSON,
-        REGEX
+        REGEX,
+        DIGEST
     }
 }

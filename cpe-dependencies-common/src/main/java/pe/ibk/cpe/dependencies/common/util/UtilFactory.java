@@ -8,6 +8,7 @@ public final class UtilFactory {
     static {
         utils.put(Util.Type.JSON, new JsonUtil());
         utils.put(Util.Type.REGEX, new RegExpressionUtil());
+        utils.put(Util.Type.DIGEST, new DigestUtil());
     }
 
     public Util solve(Util.Type type) {
