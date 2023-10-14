@@ -5,10 +5,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pe.ibk.cpe.dependencies.common.exception.BaseException;
 import pe.ibk.cpe.dependencies.common.exception.DependencyException;
 import pe.ibk.cpe.dependencies.common.exception.error.UserError;
+import pe.ibk.cpe.dependencies.common.security.SystemUserData;
 import pe.ibk.cpe.dependencies.common.util.JsonUtil;
 import pe.ibk.cpe.dependencies.infrastructure.security.token.TokenValidationService;
 
@@ -31,6 +33,8 @@ public class ProtectedAppFilter extends OncePerRequestFilter {
         System.out.println("ProtectedAppFilter ...");
         try {
             TokenValidationService.TokenValidationResponse tokenValidationResponse = validate(request, response);
+            SystemUserData coreAuthenticatedUser = new SystemUserData(tokenValidationResponse.getCredentialId(), null, null);
+            SecurityContextHolder.getContext().setAuthentication(coreAuthenticatedUser);
 
             filterChain.doFilter(request, response);
         } catch (DependencyException ex) {

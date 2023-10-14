@@ -3,6 +3,7 @@ package pe.ibk.cpe.dependencies.infrastructure.security.config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -57,6 +58,7 @@ public class AppSecurityConfig {
     }
 
     @Bean
+    @Order(1)
     public SecurityFilterChain publicSecurityFilterChain(HttpSecurity httpSecurity,
                                                          AppSecurityConfiguration appSecurityConfiguration,
                                                          PublicAppFilter publicAppFilter) throws Exception {
@@ -68,11 +70,13 @@ public class AppSecurityConfig {
                 .addFilterAfter(publicAppFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(appSecurityConfiguration.getPath().getPublicPath()).authenticated();
+                    authorize.anyRequest().denyAll();
                 })
                 .build();
     }
 
     @Bean
+    @Order(2)
     public SecurityFilterChain protectedSecurityFilterChain(HttpSecurity httpSecurity,
                                                             AppSecurityConfiguration appSecurityConfiguration,
                                                             ProtectedAppFilter protectedAppFilter) throws Exception {
@@ -84,11 +88,13 @@ public class AppSecurityConfig {
                 .addFilterAfter(protectedAppFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(appSecurityConfiguration.getPath().getProtectedPath()).authenticated();
+                    authorize.anyRequest().denyAll();
                 })
                 .build();
     }
 
     @Bean
+    @Order(3)
     public SecurityFilterChain privateSecurityFilterChain(HttpSecurity httpSecurity,
                                                           AppSecurityConfiguration appSecurityConfiguration,
                                                           PrivateAppFilter privateAppFilter) throws Exception {
@@ -100,6 +106,7 @@ public class AppSecurityConfig {
                 .addFilterAfter(privateAppFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(appSecurityConfiguration.getPath().getPrivatePath()).authenticated();
+                    authorize.anyRequest().denyAll();
                 })
                 .build();
     }
