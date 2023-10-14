@@ -11,7 +11,7 @@
     <artifactId>cpe-dependencies-common</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>cpe-dependencies-global</name>
+    <name>cpe-dependencies-common</name>
 
     <properties>
     </properties>
@@ -33,8 +33,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
