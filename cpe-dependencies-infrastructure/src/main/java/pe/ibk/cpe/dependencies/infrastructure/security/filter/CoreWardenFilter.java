@@ -16,7 +16,11 @@ import java.util.Objects;
 @Slf4j
 public class CoreWardenFilter extends OncePerRequestFilter {
     private static final String DEVICE_HEADER = "device-id";
-    private final JsonUtil jsonUtil = new JsonUtil();
+    private final JsonUtil jsonUtil;
+
+    public CoreWardenFilter(JsonUtil jsonUtil) {
+        this.jsonUtil = jsonUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

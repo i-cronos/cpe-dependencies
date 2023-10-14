@@ -11,19 +11,19 @@ import pe.ibk.cpe.dependencies.common.exception.DependencyException;
 
 import java.util.*;
 
-public class TokenValidationProvider {
+public class TokenValidationService {
     private final TokenConfiguration tokenConfiguration;
 
-    public TokenValidationProvider(TokenConfiguration tokenConfiguration) {
+    public TokenValidationService(TokenConfiguration tokenConfiguration) {
         this.tokenConfiguration = tokenConfiguration;
     }
 
     public TokenValidationResponse validate(TokenValidationRequest tokenValidationRequest) {
         try {
-            Algorithm algorithm = Algorithm.HMAC512(tokenConfiguration.getKey());
+            Algorithm algorithm = Algorithm.HMAC512(tokenConfiguration.getGeneral().getKey());
 
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer(tokenConfiguration.getIssuer())
+                    .withIssuer(tokenConfiguration.getGeneral().getIssuer())
                     .build();
 
             DecodedJWT jwt = verifier.verify(tokenValidationRequest.getToken());

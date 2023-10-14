@@ -13,28 +13,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class TokenCreationProvider {
+public class TokenCreationService {
     private final TokenConfiguration tokenConfiguration;
 
-    public TokenCreationProvider(TokenConfiguration tokenConfiguration) {
+    public TokenCreationService(TokenConfiguration tokenConfiguration) {
         this.tokenConfiguration = tokenConfiguration;
     }
 
     public TokenCreationResponse create(TokenCreationRequest tokenCreationRequest) {
         try {
-            TokenConfiguration.Config config = tokenConfiguration.solve(tokenCreationRequest.tokenType);
+            TokenConfiguration.Custom custom = tokenConfiguration.solve(tokenCreationRequest.tokenType);
 
-            Algorithm algorithm = Algorithm.HMAC512(tokenConfiguration.getKey());
+            Algorithm algorithm = Algorithm.HMAC512(tokenConfiguration.getGeneral().getKey());
             Instant now = Instant.now();
             String token = JWT.create()
-                    .withIssuer(tokenConfiguration.getIssuer())
-                    .withSubject(config.getSubject())
+                    .withIssuer(tokenConfiguration.getGeneral().getIssuer())
+                    .withSubject(custom.getSubject())
                     .withClaim(TokenClaimId.TYPE, tokenCreationRequest.getTokenType().name())
                     .withClaim(TokenClaimId.ID, tokenCreationRequest.getCredentialId())
                     .withArrayClaim(TokenClaimId.AUTHORITIES, listToArray(tokenCreationRequest.getAuthorities()))
                     .withClaim(TokenClaimId.DATA, tokenCreationRequest.getData())
                     .withIssuedAt(now)
-                    .withExpiresAt(now.plus(config.getTtl(), ChronoUnit.MINUTES))
+                    .withExpiresAt(now.plus(custom.getTtl(), ChronoUnit.MINUTES))
                     .sign(algorithm);
 
 
