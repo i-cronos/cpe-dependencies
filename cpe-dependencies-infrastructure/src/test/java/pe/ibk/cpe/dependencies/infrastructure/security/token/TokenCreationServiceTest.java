@@ -3,6 +3,9 @@ package pe.ibk.cpe.dependencies.infrastructure.security.token;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.configuration.TokenGeneralConfiguration;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.configuration.TokenGroupConfiguration;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.types.TokenType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,18 +34,18 @@ class TokenCreationServiceTest {
     }
 
     private TokenCreationService buildTokenCreationService() {
-        TokenConfiguration.Custom config = new TokenConfiguration.Custom();
-        config.setTokenType(TokenType.USER);
-        config.setTtl(5);
-        config.setRefreshTtl(10);
-        config.setSubject("USER");
+        TokenGroupConfiguration.Group group = new TokenGroupConfiguration.Group();
+        group.setTokenType(TokenType.USER);
+        group.setTtl(5);
+        group.setRefreshTtl(10);
+        group.setSubject("USER");
+        TokenGroupConfiguration tokenGroupConfiguration = new TokenGroupConfiguration();
+        tokenGroupConfiguration.setGroups(Collections.singletonList(group));
 
-        TokenConfiguration tokenConfiguration = new TokenConfiguration();
-        tokenConfiguration.setGeneral(new TokenConfiguration.General());
-        tokenConfiguration.getGeneral().setKey("LostToken!3.141516");
-        tokenConfiguration.getGeneral().setIssuer("CPE");
-        tokenConfiguration.setCustoms(Collections.singletonList(config));
+        TokenGeneralConfiguration tokenGeneralConfiguration = new TokenGeneralConfiguration();
+        tokenGeneralConfiguration.setKey("LostToken!3.141516");
+        tokenGeneralConfiguration.setIssuer("CPE");
 
-        return new TokenCreationService(tokenConfiguration);
+        return new TokenCreationService(tokenGeneralConfiguration, tokenGroupConfiguration);
     }
 }

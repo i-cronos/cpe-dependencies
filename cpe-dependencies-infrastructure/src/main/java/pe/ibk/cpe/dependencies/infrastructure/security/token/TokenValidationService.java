@@ -8,22 +8,25 @@ import lombok.Builder;
 import lombok.Getter;
 import pe.ibk.cpe.dependencies.common.exception.BaseException;
 import pe.ibk.cpe.dependencies.common.exception.DependencyException;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.claim.TokenClaimId;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.configuration.TokenGeneralConfiguration;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.types.TokenType;
 
 import java.util.*;
 
 public class TokenValidationService {
-    private final TokenConfiguration tokenConfiguration;
+    private final TokenGeneralConfiguration tokenGeneralConfiguration;
 
-    public TokenValidationService(TokenConfiguration tokenConfiguration) {
-        this.tokenConfiguration = tokenConfiguration;
+    public TokenValidationService(TokenGeneralConfiguration tokenGeneralConfiguration) {
+        this.tokenGeneralConfiguration = tokenGeneralConfiguration;
     }
 
     public TokenValidationResponse validate(TokenValidationRequest tokenValidationRequest) {
         try {
-            Algorithm algorithm = Algorithm.HMAC512(tokenConfiguration.getGeneral().getKey());
+            Algorithm algorithm = Algorithm.HMAC512(tokenGeneralConfiguration.getKey());
 
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer(tokenConfiguration.getGeneral().getIssuer())
+                    .withIssuer(tokenGeneralConfiguration.getIssuer())
                     .build();
 
             DecodedJWT jwt = verifier.verify(tokenValidationRequest.getToken());

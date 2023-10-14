@@ -14,11 +14,12 @@ import java.io.IOException;
 import java.util.Objects;
 
 @Slf4j
-public class CoreWardenFilter extends OncePerRequestFilter {
+public class AppWardenFilter extends OncePerRequestFilter {
     private static final String DEVICE_HEADER = "device-id";
     private final JsonUtil jsonUtil;
 
-    public CoreWardenFilter(JsonUtil jsonUtil) {
+    public AppWardenFilter(JsonUtil jsonUtil) {
+        super();
         this.jsonUtil = jsonUtil;
     }
 
@@ -41,4 +42,5 @@ public class CoreWardenFilter extends OncePerRequestFilter {
             response.getWriter().write(jsonUtil.toJson(userError));
         }
     }
+
 }

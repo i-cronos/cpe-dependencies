@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pe.ibk.cpe.dependencies.common.exception.BaseException;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.configuration.TokenGeneralConfiguration;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.configuration.TokenGroupConfiguration;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.types.TokenType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,27 +82,27 @@ class TokenValidationServiceTest {
     }
 
     private TokenCreationService buildTokenCreationProvider(String key) {
-        return new TokenCreationService(buildTokenConfiguration(key));
+        TokenGroupConfiguration.Group group = new TokenGroupConfiguration.Group();
+        group.setTokenType(TokenType.USER);
+        group.setTtl(5);
+        group.setRefreshTtl(10);
+        group.setSubject("USER");
+        TokenGroupConfiguration tokenGroupConfiguration = new TokenGroupConfiguration();
+        tokenGroupConfiguration.setGroups(Collections.singletonList(group));
+
+        TokenGeneralConfiguration tokenGeneralConfiguration = new TokenGeneralConfiguration();
+        tokenGeneralConfiguration.setKey(key);
+        tokenGeneralConfiguration.setIssuer("CPE");
+
+        return new TokenCreationService(tokenGeneralConfiguration, tokenGroupConfiguration);
     }
 
     private TokenValidationService buildTokenValidationProvider(String key) {
-        return new TokenValidationService(buildTokenConfiguration(key));
-    }
+        TokenGeneralConfiguration tokenGeneralConfiguration = new TokenGeneralConfiguration();
+        tokenGeneralConfiguration.setKey(key);
+        tokenGeneralConfiguration.setIssuer("CPE");
 
-    private TokenConfiguration buildTokenConfiguration(String key) {
-        TokenConfiguration.Custom config = new TokenConfiguration.Custom();
-        config.setTokenType(TokenType.USER);
-        config.setTtl(5);
-        config.setRefreshTtl(10);
-        config.setSubject("USER");
-
-        TokenConfiguration tokenConfiguration = new TokenConfiguration();
-        tokenConfiguration.setGeneral(new TokenConfiguration.General());
-        tokenConfiguration.getGeneral().setKey(key);
-        tokenConfiguration.getGeneral().setIssuer("CPE");
-        tokenConfiguration.setCustoms(Collections.singletonList(config));
-
-        return tokenConfiguration;
+        return new TokenValidationService(tokenGeneralConfiguration);
     }
 
 }

@@ -1,39 +1,32 @@
-package pe.ibk.cpe.dependencies.infrastructure.security.token;
+package pe.ibk.cpe.dependencies.infrastructure.security.token.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import pe.ibk.cpe.dependencies.common.exception.BaseException;
 import pe.ibk.cpe.dependencies.common.exception.InfrastructureException;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.types.TokenType;
 
 import java.util.List;
 
 @Getter
 @Setter
-@ConfigurationProperties("token.security.config")
-public class TokenConfiguration {
+@ConfigurationProperties("token-group.security.config")
+public class TokenGroupConfiguration {
 
-    private General general;
-    private List<Custom> customs;
-
-    @Getter
-    @Setter
-    public static class General {
-        private String key;
-        private String issuer;
-    }
+    private List<Group> groups;
 
     @Getter
     @Setter
-    public static class Custom {
+    public static class Group {
         private TokenType tokenType;
         private Integer ttl;
         private Integer refreshTtl;
         private String subject;
     }
 
-    public Custom solve(TokenType tokenType) {
-        return customs.stream()
+    public Group solve(TokenType tokenType) {
+        return groups.stream()
                 .filter(config -> config.tokenType.equals(tokenType))
                 .findFirst()
                 .orElseThrow(() -> new InfrastructureException(BaseException.Error.builder()

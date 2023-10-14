@@ -1,4 +1,4 @@
-package pe.ibk.cpe.dependencies.infrastructure.security.token;
+package pe.ibk.cpe.dependencies.infrastructure.security.token.claim;
 
 public final class TokenClaimId {
     private TokenClaimId() {

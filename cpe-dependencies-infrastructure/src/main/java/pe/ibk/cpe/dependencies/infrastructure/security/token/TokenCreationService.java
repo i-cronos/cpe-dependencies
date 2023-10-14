@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import pe.ibk.cpe.dependencies.common.exception.BaseException;
 import pe.ibk.cpe.dependencies.common.exception.DependencyException;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.claim.TokenClaimId;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.configuration.TokenGeneralConfiguration;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.configuration.TokenGroupConfiguration;
+import pe.ibk.cpe.dependencies.infrastructure.security.token.types.TokenType;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -14,29 +18,30 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TokenCreationService {
-    private final TokenConfiguration tokenConfiguration;
+    private final TokenGeneralConfiguration tokenGeneralConfiguration;
+    private final TokenGroupConfiguration tokenGroupConfiguration;
 
-    public TokenCreationService(TokenConfiguration tokenConfiguration) {
-        this.tokenConfiguration = tokenConfiguration;
+    public TokenCreationService(TokenGeneralConfiguration tokenGeneralConfiguration, TokenGroupConfiguration tokenGroupConfiguration) {
+        this.tokenGeneralConfiguration = tokenGeneralConfiguration;
+        this.tokenGroupConfiguration = tokenGroupConfiguration;
     }
 
     public TokenCreationResponse create(TokenCreationRequest tokenCreationRequest) {
         try {
-            TokenConfiguration.Custom custom = tokenConfiguration.solve(tokenCreationRequest.tokenType);
+            TokenGroupConfiguration.Group group = tokenGroupConfiguration.solve(tokenCreationRequest.tokenType);
 
-            Algorithm algorithm = Algorithm.HMAC512(tokenConfiguration.getGeneral().getKey());
+            Algorithm algorithm = Algorithm.HMAC512(tokenGeneralConfiguration.getKey());
             Instant now = Instant.now();
             String token = JWT.create()
-                    .withIssuer(tokenConfiguration.getGeneral().getIssuer())
-                    .withSubject(custom.getSubject())
+                    .withIssuer(tokenGeneralConfiguration.getIssuer())
+                    .withSubject(group.getSubject())
                     .withClaim(TokenClaimId.TYPE, tokenCreationRequest.getTokenType().name())
                     .withClaim(TokenClaimId.ID, tokenCreationRequest.getCredentialId())
                     .withArrayClaim(TokenClaimId.AUTHORITIES, listToArray(tokenCreationRequest.getAuthorities()))
                     .withClaim(TokenClaimId.DATA, tokenCreationRequest.getData())
                     .withIssuedAt(now)
-                    .withExpiresAt(now.plus(custom.getTtl(), ChronoUnit.MINUTES))
+                    .withExpiresAt(now.plus(group.getTtl(), ChronoUnit.MINUTES))
                     .sign(algorithm);
-
 
             return TokenCreationResponse.builder()
                     .tokenType(tokenCreationRequest.getTokenType())
