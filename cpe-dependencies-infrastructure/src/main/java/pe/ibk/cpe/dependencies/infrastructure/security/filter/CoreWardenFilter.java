@@ -1,4 +1,4 @@
-package pe.ibk.cpe.dependencies.infrastructure.security;
+package pe.ibk.cpe.dependencies.infrastructure.security.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pe.ibk.cpe.dependencies.common.exception.error.UserError;
-import pe.ibk.cpe.dependencies.common.util.CoreJsonUtil;
+import pe.ibk.cpe.dependencies.common.util.JsonUtil;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -16,7 +16,7 @@ import java.util.Objects;
 @Slf4j
 public class CoreWardenFilter extends OncePerRequestFilter {
     private static final String DEVICE_HEADER = "device-id";
-    private final CoreJsonUtil coreJsonUtil = new CoreJsonUtil();
+    private final JsonUtil jsonUtil = new JsonUtil();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -34,7 +34,7 @@ public class CoreWardenFilter extends OncePerRequestFilter {
                     .message("No allowed")
                     .build();
 
-            response.getWriter().write(coreJsonUtil.toJson(userError));
+            response.getWriter().write(jsonUtil.toJson(userError));
         }
     }
 }

@@ -6,7 +6,6 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pe.ibk.cpe.dependencies.common.util.CoreJsonUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,8 +14,8 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-class CoreJsonUtilTest {
-    CoreJsonUtil jsonLogUtil = new CoreJsonUtil();
+class JsonUtilTest {
+    JsonUtil jsonLogUtil = new JsonUtil();
 
     @Test
     void givenObject_whenToJson_thenStringJson() {

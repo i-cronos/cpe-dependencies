@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
+import pe.ibk.cpe.dependencies.common.exception.BaseException;
 import pe.ibk.cpe.dependencies.common.exception.error.SystemError;
 import pe.ibk.cpe.dependencies.common.exception.error.UserError;
-import pe.ibk.cpe.dependencies.common.exception.DomainException;
 
 import java.time.LocalDateTime;
 
@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ApplicationControllerAdvice {
 
-    @ExceptionHandler({DomainException.class})
+    @ExceptionHandler({BaseException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public UserError handleDomainError(DomainException exception, WebRequest webRequest) {
+    public UserError handleCustomError(BaseException exception, WebRequest webRequest) {
         SystemError systemError = SystemError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.name())
                 .timestamp(LocalDateTime.now().toString())
@@ -30,7 +30,7 @@ public class ApplicationControllerAdvice {
                 .groupCode(exception.getError().getGroupCode())
                 .build();
 
-        log.info("Domain error : {}", systemError);
+        log.info("Custom error {}, {}", exception.getClass(), systemError);
 
         return map(systemError);
     }

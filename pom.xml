@@ -47,7 +47,7 @@
             <dependency>
                 <groupId>pe.ibk.cpe</groupId>
                 <artifactId>cpe-dependencies-infrastructure</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <!-- spring boot -->
@@ -96,6 +96,18 @@
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.16.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>4.4.0</version>
             </dependency>
 
         </dependencies>
