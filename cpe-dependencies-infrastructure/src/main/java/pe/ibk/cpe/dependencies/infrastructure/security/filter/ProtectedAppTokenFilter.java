@@ -42,8 +42,9 @@ public class ProtectedAppTokenFilter extends OncePerRequestFilter {
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 
-            SystemUserData coreAuthenticatedUser = new SystemUserData(tokenValidationResponse.getCredentialId(), null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(coreAuthenticatedUser);
+            SystemUserData systemUserData = new SystemUserData("cronos", "xdxdxd", authorities);
+
+            SecurityContextHolder.getContext().setAuthentication(systemUserData);
 
             filterChain.doFilter(request, response);
         } catch (DependencyException ex) {

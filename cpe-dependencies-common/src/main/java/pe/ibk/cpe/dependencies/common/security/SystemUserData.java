@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public class SystemUserData extends UsernamePasswordAuthenticationToken {
 
-    public SystemUserData(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    public SystemUserData( Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(principal, credentials, authorities);
     }
 }
