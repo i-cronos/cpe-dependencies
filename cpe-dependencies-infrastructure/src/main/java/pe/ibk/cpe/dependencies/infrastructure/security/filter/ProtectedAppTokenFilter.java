@@ -11,8 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pe.ibk.cpe.dependencies.common.exception.DependencyException;
 import pe.ibk.cpe.dependencies.common.exception.error.UserError;
-import pe.ibk.cpe.dependencies.common.security.SystemUserData;
 import pe.ibk.cpe.dependencies.common.util.JsonUtil;
+import pe.ibk.cpe.dependencies.infrastructure.security.session.SystemUser;
 import pe.ibk.cpe.dependencies.infrastructure.security.token.TokenValidationService;
 
 import java.io.IOException;
@@ -37,14 +37,14 @@ public class ProtectedAppTokenFilter extends OncePerRequestFilter {
         try {
             TokenValidationService.TokenValidationResponse tokenValidationResponse = validate(request, response);
 
-            List<GrantedAuthority> authorities= tokenValidationResponse.getAuthorities()
+            List<GrantedAuthority> authorities = tokenValidationResponse.getAuthorities()
                     .stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 
-            SystemUserData systemUserData = new SystemUserData("cronos", "xdxdxd", authorities);
+            SystemUser systemUser = new SystemUser(null, null, authorities, tokenValidationResponse.getCredentialId());
 
-            SecurityContextHolder.getContext().setAuthentication(systemUserData);
+            SecurityContextHolder.getContext().setAuthentication(systemUser);
 
             filterChain.doFilter(request, response);
         } catch (DependencyException ex) {
