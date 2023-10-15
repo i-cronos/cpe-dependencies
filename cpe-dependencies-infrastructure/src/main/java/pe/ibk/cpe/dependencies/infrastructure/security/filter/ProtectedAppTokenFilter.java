@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import pe.ibk.cpe.dependencies.common.exception.DependencyException;
 import pe.ibk.cpe.dependencies.common.exception.error.UserError;
 import pe.ibk.cpe.dependencies.common.util.JsonUtil;
-import pe.ibk.cpe.dependencies.infrastructure.security.session.SystemUser;
+import pe.ibk.cpe.dependencies.common.security.SystemUser;
 import pe.ibk.cpe.dependencies.infrastructure.security.token.TokenValidationService;
 
 import java.io.IOException;
