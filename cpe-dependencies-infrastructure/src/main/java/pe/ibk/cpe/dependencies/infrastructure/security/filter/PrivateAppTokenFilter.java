@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pe.ibk.cpe.dependencies.common.exception.DependencyException;
 import pe.ibk.cpe.dependencies.common.exception.error.UserError;
-import pe.ibk.cpe.dependencies.common.security.SystemUserData;
+import pe.ibk.cpe.dependencies.common.security.SystemUser;
 import pe.ibk.cpe.dependencies.common.util.JsonUtil;
 import pe.ibk.cpe.dependencies.infrastructure.security.token.TokenValidationService;
 
@@ -42,8 +42,8 @@ public class PrivateAppTokenFilter extends OncePerRequestFilter {
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 
-            SystemUserData coreAuthenticatedUser = new SystemUserData(tokenValidationResponse.getCredentialId(), null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(coreAuthenticatedUser);
+            SystemUser systemUser = new SystemUser(null, null, authorities, tokenValidationResponse.getCredentialId());
+            SecurityContextHolder.getContext().setAuthentication(systemUser);
 
             filterChain.doFilter(request, response);
         } catch (DependencyException ex) {
