@@ -10,9 +10,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pe.ibk.cpe.dependencies.common.util.JsonUtil;
-import pe.ibk.cpe.dependencies.infrastructure.security.filter.PrivateAppFilter;
-import pe.ibk.cpe.dependencies.infrastructure.security.filter.ProtectedAppFilter;
-import pe.ibk.cpe.dependencies.infrastructure.security.filter.PublicAppFilter;
+import pe.ibk.cpe.dependencies.infrastructure.security.filter.PublicAppTokenFilter;
+import pe.ibk.cpe.dependencies.infrastructure.security.filter.ProtectedAppTokenFilter;
+import pe.ibk.cpe.dependencies.infrastructure.security.filter.PrivateAppTokenFilter;
 import pe.ibk.cpe.dependencies.infrastructure.security.filter.configuration.AppSecurityConfiguration;
 import pe.ibk.cpe.dependencies.infrastructure.security.token.TokenValidationService;
 import pe.ibk.cpe.dependencies.infrastructure.security.token.configuration.TokenGeneralConfiguration;
@@ -38,78 +38,70 @@ public class AppSecurityConfig {
     }
 
     @Bean
-    public PublicAppFilter publicAppFilter() {
-        return new PublicAppFilter();
-    }
-
-    @Bean
-    public ProtectedAppFilter protectedAppFilter(TokenValidationService tokenValidationService, JsonUtil jsonUtil) {
-        return new ProtectedAppFilter(tokenValidationService, jsonUtil);
-    }
-
-    @Bean
-    public PrivateAppFilter privateAppFilter(TokenValidationService tokenValidationService, JsonUtil jsonUtil) {
-        return new PrivateAppFilter(tokenValidationService, jsonUtil);
-    }
-
-    @Bean
     public AppSecurityConfiguration appSecurityConfiguration() {
         return new AppSecurityConfiguration();
     }
 
-    @Bean
-    @Order(1)
-    public SecurityFilterChain publicSecurityFilterChain(HttpSecurity httpSecurity,
-                                                         AppSecurityConfiguration appSecurityConfiguration,
-                                                         PublicAppFilter publicAppFilter) throws Exception {
-        return httpSecurity
-                .securityMatcher(appSecurityConfiguration.getPath().getPublicPath())
-                .csrf(csrfConf -> csrfConf.disable())
-                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .httpBasic(basicConfig -> basicConfig.disable())
-                .addFilterAfter(publicAppFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers(appSecurityConfiguration.getPath().getPublicPath()).authenticated();
-                    authorize.anyRequest().denyAll();
-                })
-                .build();
-    }
 
     @Bean
-    @Order(2)
-    public SecurityFilterChain protectedSecurityFilterChain(HttpSecurity httpSecurity,
-                                                            AppSecurityConfiguration appSecurityConfiguration,
-                                                            ProtectedAppFilter protectedAppFilter) throws Exception {
+    @Order(100)
+    public SecurityFilterChain appSecurityFilterChain(HttpSecurity httpSecurity,
+                                                      AppSecurityConfiguration appSecurityConfiguration,
+                                                      TokenValidationService tokenValidationService,
+                                                      JsonUtil jsonUtil) throws Exception {
+        ProtectedAppTokenFilter filter = new ProtectedAppTokenFilter(tokenValidationService, jsonUtil);
         return httpSecurity
                 .securityMatcher(appSecurityConfiguration.getPath().getProtectedPath())
                 .csrf(csrfConf -> csrfConf.disable())
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(basicConfig -> basicConfig.disable())
-                .addFilterAfter(protectedAppFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers(appSecurityConfiguration.getPath().getProtectedPath()).authenticated();
-                    authorize.anyRequest().denyAll();
+                    authorize.anyRequest().authenticated();
                 })
                 .build();
     }
 
     @Bean
-    @Order(3)
-    public SecurityFilterChain privateSecurityFilterChain(HttpSecurity httpSecurity,
-                                                          AppSecurityConfiguration appSecurityConfiguration,
-                                                          PrivateAppFilter privateAppFilter) throws Exception {
+    @Order(101)
+    public SecurityFilterChain internalSecurityFilterChain(HttpSecurity httpSecurity,
+                                                           AppSecurityConfiguration appSecurityConfiguration,
+                                                           TokenValidationService tokenValidationService,
+                                                           JsonUtil jsonUtil) throws Exception {
+        PrivateAppTokenFilter filter = new PrivateAppTokenFilter(tokenValidationService, jsonUtil);
+
         return httpSecurity
                 .securityMatcher(appSecurityConfiguration.getPath().getPrivatePath())
                 .csrf(csrfConf -> csrfConf.disable())
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(basicConfig -> basicConfig.disable())
-                .addFilterAfter(privateAppFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers(appSecurityConfiguration.getPath().getPrivatePath()).authenticated();
-                    authorize.anyRequest().denyAll();
+                    authorize.anyRequest().authenticated();
                 })
                 .build();
     }
+
+    @Bean
+    @Order(102)
+    public SecurityFilterChain publicSecurityFilterChain(HttpSecurity httpSecurity,
+                                                         AppSecurityConfiguration appSecurityConfiguration,
+                                                         TokenValidationService tokenValidationService,
+                                                         JsonUtil jsonUtil) throws Exception {
+        PublicAppTokenFilter filter = new PublicAppTokenFilter();
+
+        return httpSecurity
+                .securityMatcher(appSecurityConfiguration.getPath().getPublicPath())
+                .csrf(csrfConf -> csrfConf.disable())
+                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(basicConfig -> basicConfig.disable())
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(authorize -> {
+                    authorize.anyRequest().permitAll();
+                })
+                .build();
+    }
+
 
 }
 
