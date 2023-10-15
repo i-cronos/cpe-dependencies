@@ -33,7 +33,7 @@ public class ProtectedAppTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("ProtectedAppFilter ...");
+        log.info("ProtectedAppFilter ...");
         try {
             TokenValidationService.TokenValidationResponse tokenValidationResponse = validate(request, response);
 

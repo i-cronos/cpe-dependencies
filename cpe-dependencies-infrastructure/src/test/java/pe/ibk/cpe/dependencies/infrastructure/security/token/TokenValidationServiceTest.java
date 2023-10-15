@@ -51,9 +51,7 @@ class TokenValidationServiceTest {
                 .token("eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJDUEUiLCJzdWIiOiJVU0VSIiwiX3R5cGUiOiJVU0VSIiwiX2lkIjoiMDRhYjE5ZTUtM2E1ZC00YjcwLWE1MDgtZTkyYjU4NGQzZjRjIiwiX2dyYW50cyI6WyJBRE1JTiIsIkdVRVNUIl0sIl9kYXRhIjp7Ik1PRFVMRV9BIjoidHJ1ZSJ9LCJpYXQiOjE2OTcyODQ1MDMsImV4cCI6MTY5NzI4NDgwM30.8ZTYg3GWr2MlEp-Az6rDSa-5G99PD74CdcQhun4FO7s-QQWmFKY22bNEweSF88dHA09t2fTxSZH0NgOqK7Cs1g")
                 .build();
 
-        BaseException exception = Assertions.assertThrows(BaseException.class, () -> tokenValidationService.validate(tokenValidationRequest));
-
-        System.out.println(exception.getError());
+        Assertions.assertThrows(BaseException.class, () -> tokenValidationService.validate(tokenValidationRequest));
     }
 
     @Test
@@ -76,9 +74,7 @@ class TokenValidationServiceTest {
                 .token(tokenCreationResponse.getToken())
                 .build();
 
-        BaseException exception = Assertions.assertThrows(BaseException.class, () -> tokenValidationService.validate(tokenValidationRequest));
-
-        System.out.println(exception.getError());
+        Assertions.assertThrows(BaseException.class, () -> tokenValidationService.validate(tokenValidationRequest));
     }
 
     private TokenCreationService buildTokenCreationProvider(String key) {

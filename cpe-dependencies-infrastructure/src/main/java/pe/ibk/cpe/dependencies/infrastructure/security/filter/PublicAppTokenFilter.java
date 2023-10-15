@@ -14,7 +14,7 @@ public class PublicAppTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("PublicAppFilter ...");
+        log.info("PublicAppFilter ...");
         filterChain.doFilter(request, response);
     }
 }
