@@ -35,7 +35,7 @@ public class ProtectedAppTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("ProtectedAppFilter ...");
         try {
-            TokenValidationService.TokenValidationResponse tokenValidationResponse = validate(request, response);
+            TokenValidationService.TokenValidationResponse tokenValidationResponse = validate(request);
 
             List<GrantedAuthority> authorities = tokenValidationResponse.getAuthorities()
                     .stream()
@@ -60,7 +60,7 @@ public class ProtectedAppTokenFilter extends OncePerRequestFilter {
         }
     }
 
-    private TokenValidationService.TokenValidationResponse validate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private TokenValidationService.TokenValidationResponse validate(HttpServletRequest request) throws IOException {
         String tokenHeader = request.getHeader("Authorization");
         String token = tokenHeader.substring(BEARER.length());
 
